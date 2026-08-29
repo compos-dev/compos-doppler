@@ -1,9 +1,9 @@
-defmodule Aimax.DopplerTest do
+defmodule Compos.DopplerTest do
   @moduledoc "The Doppler app lists names and changes only explicit secrets."
 
   use ExUnit.Case
 
-  alias Aimax.Core.{Editor, KeyDispatch, SchemeAPI, Session}
+  alias Compos.Core.{Editor, KeyDispatch, SchemeAPI, Session}
 
   defp eval!(src) do
     {:ok, printed} = Session.eval(src)
@@ -13,7 +13,7 @@ defmodule Aimax.DopplerTest do
   defp press(keys), do: Enum.each(List.wrap(keys), &KeyDispatch.handle_key/1)
 
   setup do
-    dir = Path.join(System.tmp_dir!(), "aimax-doppler-#{System.unique_integer([:positive])}")
+    dir = Path.join(System.tmp_dir!(), "compos-doppler-#{System.unique_integer([:positive])}")
     File.mkdir_p!(dir)
     script = Path.join(dir, "doppler")
     calls = Path.join(dir, "calls")
@@ -44,7 +44,7 @@ defmodule Aimax.DopplerTest do
     Editor.set_pending([])
 
     on_exit(fn ->
-      Aimax.Core.kill_buffer("*doppler*")
+      Compos.Core.kill_buffer("*doppler*")
       File.rm_rf!(dir)
       eval!(~s{(set! doppler-program "doppler")})
     end)
